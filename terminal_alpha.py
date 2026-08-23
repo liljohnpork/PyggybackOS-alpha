@@ -7,7 +7,7 @@
 import select
 import psutil
 import sys
-from microapps import calculator_microapp, randomnumber_microapp
+from microapps import calculator_microapp, randomnumber_microapp, astronomy_calculator
 import os
 import random
 if os.name == "posix":
@@ -114,6 +114,7 @@ while True:
     elif cmd == "ls microapp":
         print("Calculator")
         print("Random Number Generator (name is rng)")
+        print("Astronomy Calculator")
     elif cmd == "cpuinf":
         print(psutil.cpu_count(), "cores")
     elif cmd == "help":
@@ -132,6 +133,9 @@ while True:
                 break
             elif MATR.lower() == "rng":
                 randomnumber_microapp.getrandnum(usr)
+                break
+            elif MATR.lower() == "astronomy calculator":
+                astronomy_calculator.astro_calculator()
                 break
             else:
                 print(f"Unkown microapp: {MATR}")
