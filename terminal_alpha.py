@@ -3,17 +3,19 @@
 
 # todo: add more microapps
 
-import termios
+
 import select
 import psutil
 import sys
-import calculator_microapp
-import randomnumber_microapp
-import tty
+from microapps import calculator_microapp, randomnumber_microapp
 import os
 import random
+if os.name == "nt":
+    import msvcrt
+else:
+    import tty, termios
 
-temp3 = "0"
+temp3 = ""
 text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!£$%^&*()-_+=[];:'@#~/?.>,<`¬"
 
 
@@ -23,19 +25,19 @@ old_settings = termios.tcgetattr
 
 #get username
 try:
-    with open("usr.dat", "r") as usrn:
+    with open(os.path.expanduser("~/Documents/usr.dat"), "r") as usrn:
         usr = usrn.read()
 except FileNotFoundError:
-    with open("usr.dat","w+") as usrn:
+    with open(os.path.expanduser("~/Documents/usr.dat"),"w+") as usrn:
         usrn.write(input("Enter username: "))
         usr = usrn.read()
 
 #get password
 try:
-    with open("pas.dat", "r") as pasw:
+    with open(os.path.expanduser("~/Documents/pas.dat"), "r") as pasw:
         passw = pasw.read()
 except FileNotFoundError:
-    with open("pas.dat", "w+") as pasw:
+    with open(os.path.expanduser("~/Documents/pas.dat"), "w+") as pasw:
         temp = input("Enter password: ")
         for pop in temp:
             for i in range(3):
@@ -44,12 +46,12 @@ except FileNotFoundError:
             del bib
             pasw.write(temp2)
         passw = pasw.read()
-with open("pas.dat", "r") as pasw:
+with open(os.path.expanduser("~/Documents/pas.dat"), "r") as pasw:
     passw = pasw.read()
 
 #create password function
 def createpassword(password):
-    with open("pas.dat", "w") as pasw:
+    with open(os.path.expanduser("~/Documents/pas.dat"), "w") as pasw:
         for cak in password:
             for i in range(3):
                 bib = random.choice(text)
@@ -64,10 +66,11 @@ for i in passw[::2]:
 
 #authentification
 while True:
+    print(temp3)
     temp = input(f"Enter password for {usr} or type 'change' to change it: ")
     if temp.lower() == "change":
         tr = input("Enter password first:")
-        if "0" + tr == temp3:
+        if tr == temp3:
             change = str(input("What do you want to change your password to?: "))
             createpassword(change)
             break
@@ -75,7 +78,7 @@ while True:
             print("Incorrect password")
             next
     else:
-        if "0" + temp == temp3:
+        if temp == temp3:
              break
         else:  
             print("Incorrect password")
@@ -137,9 +140,14 @@ while True:
             #this really damn annoyed me: its finally fixed: probably
             mem = psutil.virtual_memory()
             print(f"\rram: {mem.percent}%", end="")
-            if select.select([sys.stdin], [], [], 0)[0]:
-               sys.stdin.read(1)  # consume the key (om nom nom)
-               break
+            if os.name == "posix":
+                if select.select([sys.stdin], [], [], 0)[0]:
+                  sys.stdin.read(1)  # consume the key (om nom nom)
+                  break
+            else:
+                if msvcrt.kbhit():
+                    key = msvcrt.getch()
+                    break
     else:
         print(f"Unkown command: {cmd}")
 # i have to add these cos everyone likes comments
