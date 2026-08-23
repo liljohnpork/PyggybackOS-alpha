@@ -1,5 +1,5 @@
 #import the stuff
-#quote of the update: "wait what, this is C#?"
+#quote of the update: "java is just C but no"
 
 # todo: add more microapps
 
@@ -10,35 +10,77 @@ import sys
 import calculator_microapp
 import randomnumber_microapp
 import tty
+import os
+import random
+
+temp3 = "0"
+text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!£$%^&*()-_+=[];:'@#~/?.>,<`¬"
+
 
 #i will learn what this means later...
 fd = sys.stdin.fileno()
 old_settings = termios.tcgetattr
 
+#get username
 try:
     with open("usr.dat", "r") as usrn:
         usr = usrn.read()
 except FileNotFoundError:
-    with open("usr.dat","w+r") as usrn:
+    with open("usr.dat","w+") as usrn:
         usrn.write(input("Enter username: "))
         usr = usrn.read()
-    
+
+#get password
 try:
     with open("pas.dat", "r") as pasw:
         passw = pasw.read()
 except FileNotFoundError:
     with open("pas.dat", "w+") as pasw:
-        pasw.write(input("Enter password: "))
+        temp = input("Enter password: ")
+        for pop in temp:
+            for i in range(3):
+                bib = random.choice(text)
+                temp2 = pop + bib
+            del bib
+            pasw.write(temp2)
         passw = pasw.read()
+with open("pas.dat", "r") as pasw:
+    passw = pasw.read()
 
+#create password function
+def createpassword(password):
+    with open("pas.dat", "w") as pasw:
+        for cak in password:
+            for i in range(3):
+                bib = random.choice(text)
+                temp2 = cak + bib
+            del bib
+            pasw.write(temp2)
+
+#decrypting password
 print(f"Entering as {usr}")
-while True:
-    temp = input(f"Enter password for {usr}: ")
-    if temp == passw:
-         break
-    else:  
-        print("Incorrect password")
+for i in passw[::2]:
+            temp3 = temp3 + i
 
+#authentification
+while True:
+    temp = input(f"Enter password for {usr} or type 'change' to change it: ")
+    if temp.lower() == "change":
+        tr = input("Enter password first:")
+        if "0" + tr == temp3:
+            change = str(input("What do you want to change your password to?: "))
+            createpassword(change)
+            break
+        else:
+            print("Incorrect password")
+            next
+    else:
+        if "0" + temp == temp3:
+             break
+        else:  
+            print("Incorrect password")
+
+#list of commands for cleaner code
 helplist = [
     "ver",
     "raminf",
@@ -53,8 +95,7 @@ helplist = [
 ]
 
 print("booted")
-#get it working
-#loop for it
+#main loop
 while True:
     print('')
     cmd =  input(f"{usr}@pyggy:~$ ")
@@ -99,7 +140,6 @@ while True:
             if select.select([sys.stdin], [], [], 0)[0]:
                sys.stdin.read(1)  # consume the key (om nom nom)
                break
-            
     else:
         print(f"Unkown command: {cmd}")
 # i have to add these cos everyone likes comments
