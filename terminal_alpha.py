@@ -10,18 +10,16 @@ import sys
 from microapps import calculator_microapp, randomnumber_microapp
 import os
 import random
-if os.name == "nt":
-    import msvcrt
-else:
-    import tty, termios
+import tty, termios
 
 temp3 = ""
 text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!£$%^&*()-_+=[];:'@#~/?.>,<`¬"
 
 
 #i will learn what this means later...
-fd = sys.stdin.fileno()
-old_settings = termios.tcgetattr
+if os.name == "posix":
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr
 
 #get username
 try:
@@ -142,8 +140,8 @@ while True:
             print(f"\rram: {mem.percent}%", end="")
             if os.name == "posix":
                 if select.select([sys.stdin], [], [], 0)[0]:
-                  sys.stdin.read(1)  # consume the key (om nom nom)
-                  break
+                    sys.stdin.read(1)  # consume the key (om nom nom)
+                    break
             else:
                 if msvcrt.kbhit():
                     key = msvcrt.getch()
