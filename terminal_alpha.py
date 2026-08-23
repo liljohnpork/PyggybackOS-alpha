@@ -66,7 +66,7 @@ for i in passw[::2]:
 
 #authentification
 while True:
-    print(temp3)
+    #print(temp3)
     temp = input(f"Enter password for {usr} or type 'change' to change it: ")
     if temp.lower() == "change":
         tr = input("Enter password first:")
@@ -98,6 +98,7 @@ helplist = [
 ]
 
 print("booted")
+print("type help for commands")
 #main loop
 while True:
     print('')
@@ -125,13 +126,13 @@ while True:
         while True:
             MATR = input("<run microapp>:~$ ")
             if MATR.lower() == "calculator":
-                break
                 calculator_microapp.calculation(usr)
+                break
             elif MATR.lower() == "esc":
                 break
             elif MATR.lower() == "rng":
-                break
                 randomnumber_microapp.getrandnum(usr)
+                break
             else:
                 print(f"Unkown microapp: {MATR}")
     elif cmd == "liveram":
