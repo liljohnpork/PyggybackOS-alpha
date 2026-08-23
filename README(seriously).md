@@ -13,12 +13,14 @@ IMPORTANT!!!!!!!!!!!!!!!!!!!!!
 the microapps are not seperate applications, they are one thing that are connected to the terminal_alpha.py.
 do not remove them from the directory or the whole thing could break!!!
 SUPER MORE IMPORTANT!!!!!!!!!!!!!!!!!!!!
-requires 6 modules:
+requires 8 modules:
 psutil
 sys
 random
 tty
 select
 termios
+os
+random
 
 anyway ima expand this soon cos its not super detailed
