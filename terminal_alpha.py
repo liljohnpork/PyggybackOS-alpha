@@ -10,8 +10,10 @@ import sys
 from microapps import calculator_microapp, randomnumber_microapp
 import os
 import random
-import tty, termios
-
+if os.name == "posix":
+    import tty, termios
+else:
+    import msvcrt
 temp3 = ""
 text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!£$%^&*()-_+=[];:'@#~/?.>,<`¬"
 
