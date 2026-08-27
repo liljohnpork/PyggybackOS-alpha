@@ -1,8 +1,7 @@
 #import the stuff
 #quote of the update: "java is just C but no"
 
-# todo: add more microapps
-
+# todo: add something to save to actually use the user system for
 
 import select
 import psutil
@@ -10,12 +9,15 @@ import sys
 from microapps import calculator_microapp, randomnumber_microapp, astronomy_calculator
 import os
 import random
+from datetime import datetime
 if os.name == "posix":
     import tty, termios
 else:
     import msvcrt
 temp3 = ""
 text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!£$%^&*()-_+=[];:'@#~/?.>,<`¬"
+folder = os.path.expanduser("~/Documents/pyggylogs")
+os.makedirs(folder, exist_ok=True)
 
 
 #i will learn what this means later...
@@ -58,6 +60,10 @@ def createpassword(password):
                 temp2 = cak + bib
             del bib
             pasw.write(temp2)
+
+def writeout(location, write):
+    with open(os.path.expanduser(location), "w") as file:
+        file.write(write)
 
 #decrypting password
 print(f"Entering as {usr}")
@@ -104,19 +110,37 @@ while True:
     print('')
     cmd =  input(f"{usr}@pyggy:~$ ")
     if cmd == "ver":
-        print("alpha_0.14")
+        print("alpha_0.18_1")
+
     elif cmd == "raminf":
         mem = psutil.virtual_memory()
         print(str(mem.percent)+"%" " in use of", mem.total)
       
     elif cmd == "esc":
         sys.exit()
+
     elif cmd == "ls microapp":
         print("Calculator")
         print("Random Number Generator (name is rng)")
         print("Astronomy Calculator")
+
     elif cmd == "cpuinf":
         print(psutil.cpu_count(), "cores")
+        print(str(psutil.cpu_percent()) + "%" + " in use")
+        while True:
+            answ = input("Do you wish to write out to a file?\n           (y/n)\n             ")
+
+            if answ == "y":
+                nem = f"~/Documents/pyggylogs/cpuinf.log{datetime.now().strftime("%H:%M:%S")}.log"
+                tmp = f"Cpu log for {datetime.now().strftime("%D.%m.%Y")} at {datetime.now().strftime("%H:%M:%S")}\n\n\n\n" + "Cores = " + str(psutil.cpu_count()) + "\n" + str(psutil.cpu_percent()) + "%" + " was in use"
+                writeout(nem, tmp)
+                print(f"\nWrite successful to {nem}")
+                break
+            elif answ == "n":
+                break
+            else:
+                print(f"Invalid operation: {answ}")
+                
     elif cmd == "help":
         for word in helplist:
             print(word)
@@ -139,6 +163,7 @@ while True:
                 break
             else:
                 print(f"Unkown microapp: {MATR}")
+
     elif cmd == "liveram":
         while True:
             tty.setcbreak(fd)
