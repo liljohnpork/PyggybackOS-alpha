@@ -1,7 +1,6 @@
 #import the stuff
-#quote of the update: "java is just C but no"
-
-# todo: add something to save to actually use the user system for
+#quote of the update: "ngl i kinda want a better psu"
+#todo: add something to save to actually use the user system for
 
 import select
 import psutil
@@ -91,15 +90,17 @@ while True:
 
 #list of commands for cleaner code
 helplist = [
-    "ver",
-    "raminf",
-    "esc",
-    "cpuinf",
-    "help" ,
-    "whoami" ,
-    "liveram" ,
-    "ls microapp" ,
-    "run microapp"
+    "ver - output version",
+    "raminf - show some ram info",
+    "esc - exit the system",
+    "cpuinf - show some cpu inf",
+    "help - show some useful commands" ,
+    "whoami - show what user you are" ,
+    "liveram - show live ram until a key press" ,
+    "ls microapp - list some microapps" ,
+    "run microapp - run a microapp",
+    "diskinf - show some disk info"
+    "osinf - show some basic info about your computer's operating system"
     ""
 ]
 
@@ -110,11 +111,25 @@ while True:
     print('')
     cmd =  input(f"{usr}@pyggy:~$ ")
     if cmd == "ver":
-        print("alpha_0.18_1")
+        print("alpha_0.20")
 
     elif cmd == "raminf":
         mem = psutil.virtual_memory()
-        print(str(mem.percent)+"%" " in use of", mem.total)
+        print(str(mem.percent)+"%" " in use of", str(round(mem.total/1000000)) + "MB")
+        print(str(round(mem.available/1000000)) + "MB available")
+        while True:
+                    answ = input("Do you wish to write out to a file?\n           (y/n)\n             ")
+        
+                    if answ == "y":
+                        nem = f"~/Documents/pyggylogs/raminf.log{datetime.now().strftime("%H:%M:%S")}.log"
+                        tmp = f"RAM log for {datetime.now().strftime("%D.%m.%Y")} at {datetime.now().strftime("%H:%M:%S")}\n\n\n\n" + str(mem.percent)+"%" " in use of " + str(round(mem.total/1000000)) + "MB" + "\n" + str(round(mem.available/1000000)) + "MB were available" 
+                        writeout(nem, tmp)
+                        print(f"\nWrite successful to {nem}")
+                        break
+                    elif answ == "n":
+                        break
+                    else:
+                        print(f"Invalid operation: {answ}")
       
     elif cmd == "esc":
         sys.exit()
@@ -178,6 +193,12 @@ while True:
                 if msvcrt.kbhit():
                     key = msvcrt.getch()
                     break
+    elif cmd == "diskinf":
+        print(psutil.disk_io_counters())
+        print(psutil.disk_partitions())
+        print(psutil.disk_usage("/"))
+    elif cmd == "osinf":
+        print(os.name)
     else:
         print(f"Unkown command: {cmd}")
 # i have to add these cos everyone likes comments
