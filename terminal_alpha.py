@@ -114,7 +114,7 @@ while True:
         usr = usa.read()
     cmd =  input(f"{usr}@pyggy:~$ ")
     if cmd == "ver":
-        print("alpha_0.20")
+        print("alpha_0.21")
 
     elif cmd == "raminf":
         mem = psutil.virtual_memory()
