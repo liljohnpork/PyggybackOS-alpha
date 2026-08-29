@@ -1,11 +1,11 @@
 #import the stuff
-#quote of the update: "ngl i kinda want a better psu"
-#todo: add something to save to actually use the user system for
+#quote of the update: "i use UwUntu btw"
+#todo: file writing
 
 import select
 import psutil
 import sys
-from microapps import calculator_microapp, randomnumber_microapp, astronomy_calculator
+from microapps import calculator_microapp, randomnumber_microapp, astronomy_calculator, password_generator
 import os
 import random
 from datetime import datetime
@@ -74,7 +74,7 @@ while True:
     #print(temp3)
     temp = input(f"Enter password for {usr} or type 'change' to change it: ")
     if temp.lower() == "change":
-        tr = input("Enter password first:")
+        tr = input("Enter password first: ")
         if tr == temp3:
             change = str(input("What do you want to change your password to?: "))
             createpassword(change)
@@ -101,6 +101,7 @@ helplist = [
     "run microapp - run a microapp",
     "diskinf - show some disk info"
     "osinf - show some basic info about your computer's operating system"
+    "usrchange - change your username"
     ""
 ]
 
@@ -109,6 +110,8 @@ print("type help for commands")
 #main loop
 while True:
     print('')
+    with open(os.path.expanduser("~/Documents/usr.dat"),"r") as usa:
+        usr = usa.read()
     cmd =  input(f"{usr}@pyggy:~$ ")
     if cmd == "ver":
         print("alpha_0.20")
@@ -118,18 +121,17 @@ while True:
         print(str(mem.percent)+"%" " in use of", str(round(mem.total/1000000)) + "MB")
         print(str(round(mem.available/1000000)) + "MB available")
         while True:
-                    answ = input("Do you wish to write out to a file?\n           (y/n)\n             ")
-        
-                    if answ == "y":
-                        nem = f"~/Documents/pyggylogs/raminf.log{datetime.now().strftime("%H:%M:%S")}.log"
-                        tmp = f"RAM log for {datetime.now().strftime("%D.%m.%Y")} at {datetime.now().strftime("%H:%M:%S")}\n\n\n\n" + str(mem.percent)+"%" " in use of " + str(round(mem.total/1000000)) + "MB" + "\n" + str(round(mem.available/1000000)) + "MB were available" 
-                        writeout(nem, tmp)
-                        print(f"\nWrite successful to {nem}")
-                        break
-                    elif answ == "n":
-                        break
-                    else:
-                        print(f"Invalid operation: {answ}")
+            answ = input("Do you wish to write out to a file?\n           (y/n)\n             ")
+            if answ == "y":
+                nem = f"~/Documents/pyggylogs/raminf.log{datetime.now().strftime("%H:%M:%S")}.log"
+                tmp = f"RAM log for {datetime.now().strftime("%D.%m.%Y")} at {datetime.now().strftime("%H:%M:%S")}\n\n\n\n" + str(mem.percent)+"%" " in use of " + str(round(mem.total/1000000)) + "MB" + "\n" + str(round(mem.available/1000000)) + "MB were available" 
+                writeout(nem, tmp)
+                print(f"\nWrite successful to {nem}")
+                break
+            elif answ == "n":
+                break
+            else:
+                print(f"Invalid operation: {answ}")
       
     elif cmd == "esc":
         sys.exit()
@@ -138,6 +140,7 @@ while True:
         print("Calculator")
         print("Random Number Generator (name is rng)")
         print("Astronomy Calculator")
+        print("Random Password Generator (name is rpg)")
 
     elif cmd == "cpuinf":
         print(psutil.cpu_count(), "cores")
@@ -176,6 +179,9 @@ while True:
             elif MATR.lower() == "astronomy calculator":
                 astronomy_calculator.astro_calculator()
                 break
+            elif MATR.lower() == "rpg":
+                password_generator.password_generator()
+                break
             else:
                 print(f"Unkown microapp: {MATR}")
 
@@ -199,6 +205,9 @@ while True:
         print(psutil.disk_usage("/"))
     elif cmd == "osinf":
         print(os.name)
+    elif cmd == "usrnchange":
+        with open(os.path.expanduser("~/Documents/usr.dat"),"w+") as usa:
+            usa.write(input("Enter new username: "))
     else:
         print(f"Unkown command: {cmd}")
 # i have to add these cos everyone likes comments
