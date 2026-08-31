@@ -99,8 +99,8 @@ helplist = [
     "liveram - show live ram until a key press" ,
     "ls microapp - list some microapps" ,
     "run microapp - run a microapp",
-    "diskinf - show some disk info"
-    "osinf - show some basic info about your computer's operating system"
+    "diskinf - show some disk info",
+    "osinf - show some basic info about your computer's operating system",
     "usrchange - change your username"
     ""
 ]
